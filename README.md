@@ -20,7 +20,7 @@ cd docker-gbp
 
 ```
 cd into-git-build-package-debian-package
-docker run -ti -v$(pwd):/build braiins/gbp /bin/bash -c "git-buildpackage --git-pbuilder --git-dist=jessie --git-arch=amd64 -uc -us"
+docker run --privileged -ti -v$(pwd):/build braiins/gbp /bin/bash -c "git-buildpackage --git-pbuilder --git-dist=jessie --git-arch=amd64 -uc -us"
 
 ```
 
@@ -32,4 +32,4 @@ This example builds a package without signing the *source* package and *.changes
 
 One idea that comes to mind is to build the package directly using **debuild** inside of the container (**gbp** natively uses debuild). The problem is that **git-buildpackage** has many dependencies and the build of the package would **NOT** happen in a minimal system. Therefore, it is cleaner to build the package in pbuilder environment.
 
-This all looks very nice and smooth, there is one drawback, though: creating pbuilder environment and executing pbuilder (**gbp**) requires bind mounting /proc /dev/shm and other special filesystems. This is possible **only if** the container runs in privileged mode.
+This all looks very nice and smooth, there is one drawback, though: creating pbuilder environment and executing pbuilder (**gbp**) requires bind mounting /proc /dev/shm and other special filesystems. This is possible **only if** the container runs in privileged mode (see the example above).
